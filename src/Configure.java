@@ -5,10 +5,11 @@ import akka.actor.ActorRef;
  */
 public class Configure {
     private ActorRef collectionActor;
-    private String fileName;
+    private String fileName, regex;
 
-    public Configure(ActorRef collectionActor, String fileName) {
+    public Configure(ActorRef collectionActor, String regex, String fileName) {
         this.collectionActor = collectionActor;
+        this.regex = regex;
         this.fileName = fileName;
     }
 
@@ -17,6 +18,10 @@ public class Configure {
     }
 
     public String getFileName() {
-        return  fileName;
+        return this.fileName;
+    }
+
+    public String getRegularExpression() {
+        return this.regex;
     }
 }
