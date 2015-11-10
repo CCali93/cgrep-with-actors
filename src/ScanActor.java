@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -17,6 +18,8 @@ public class ScanActor extends UntypedActor {
 
             Scanner inputScanner;
 
+            Pattern regexPattern = Pattern.compile(configMessage.getRegularExpression());
+
             if (configMessage.getFileName() != null) {
                 inputScanner = new Scanner(new File(configMessage.getFileName()));
             } else {
@@ -28,7 +31,10 @@ public class ScanActor extends UntypedActor {
             while(inputScanner.hasNextLine()) {
                 String line = inputScanner.nextLine();
 
-                //TODO: match the REGEX with the line
+                Matcher regexMatcher = regexPattern.matcher(line);
+                if (regexMatcher.matches()) {
+                    matchingLines.add(line);
+                }
             }
         }
     }
