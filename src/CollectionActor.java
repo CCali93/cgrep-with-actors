@@ -19,12 +19,15 @@ public class CollectionActor extends UntypedActor {
 
             Iterator<String> matchingLines = found.getIterator();
 
-            System.out.printf("Matching lines for %s: \n", found.getFileName());
+            String nameToPrint = found.getFileName() == null ? "-" : found.getFileName();
+            System.out.printf("Matching lines for %s: \n", nameToPrint);
 
             while(matchingLines.hasNext()) {
                 String matchingLine = matchingLines.next();
                 System.out.println(matchingLine);
             }
+
+            System.out.println();
 
             //Once all messages have been received
             if(this.filesReceived == this.numberOfFiles) {
@@ -33,6 +36,8 @@ public class CollectionActor extends UntypedActor {
         } else if (message instanceof FileCount) {
             FileCount fileCount = (FileCount) message;
             this.numberOfFiles = fileCount.getNumberOfFiles();
+        } else {
+            unhandled(message);
         }
     }
 }

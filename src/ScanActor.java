@@ -16,9 +16,10 @@ public class ScanActor extends UntypedActor {
         if (message instanceof Configure) {
             Configure configMessage = (Configure) message;
 
-            Scanner inputScanner;
-
+            ActorRef collectionActor = configMessage.getCollectionActor();
             Pattern regexPattern = Pattern.compile(configMessage.getRegularExpression());
+
+            Scanner inputScanner;
 
             if (configMessage.getFileName() != null) {
                 inputScanner = new Scanner(new File(configMessage.getFileName()));
@@ -36,6 +37,10 @@ public class ScanActor extends UntypedActor {
                     matchingLines.add(line);
                 }
             }
+
+            collectionActor.tell(new Found(configMessage.getFileName(), matchingLines));
+        } else {
+            unhandled(message);
         }
     }
 }
